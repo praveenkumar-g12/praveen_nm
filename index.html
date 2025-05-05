@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice Search Engine</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f0f0f0;
+    }
+    h1 {
+      color: #333;
+    }
+    #output {
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #444;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 1.2em;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Speech-Based Search Engine</h1>
+  <button onclick="startListening()">Speak Now</button>
+  <div id="output"></div>
+
+  <script>
+    function startListening() {
+      const output = document.getElementById("output");
+
+      if (!('webkitSpeechRecognition' in window)) {
+        output.textContent = "Speech Recognition not supported in this browser.";
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onstart = function () {
+        output.textContent = "Listening...";
+      };
+
+      recognition.onresult = function (event) {
+        const speechResult = event.results[0][0].transcript;
+        output.textContent = You said: "${speechResult}";
+
+        // Perform Google search
+        const searchURL = https://www.google.com/search?q=${encodeURIComponent(speechResult)};
+        window.open(searchURL, "_blank");
+      };
+
+      recognition.onerror = function (event) {
+        output.textContent = Error occurred: ${event.error};
+      };
+
+      recognition.start();
+    }
+  </script>
+</body>
+</html>
